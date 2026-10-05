@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>LC Engineering Study Hub</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#081421">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LC Engineering">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:#07101c;
+ color:#e9f3ff;
+ font-family:Arial,Helvetica,sans-serif;
+ line-height:1.6
+}
+
+header{
+ position:sticky;
+ top:0;
+ z-index:10;
+ background:#081421ee;
+ border-bottom:1px solid #23415d;
+ padding:15px 5%;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:15px;
+ backdrop-filter:blur(10px)
+}
+
+.logo{
+ font-size:20px;
+ font-weight:bold
+}
+
+.logo span{
+ color:#35b9ff
+}
+
+#search{
+ width:350px;
+ max-width:45vw;
+ padding:11px 14px;
+ border-radius:9px;
+ border:1px solid #31506d;
+ background:#0c1b2b;
+ color:white;
+ outline:none
+}
+
+#search:focus{
+ border-color:#35b9ff
+}
+
+main{
+ max-width:1200px;
+ margin:auto;
+ padding:35px 5%
+}
+
+.hero{
+ padding:30px;
+ border:1px solid #284760;
+ border-radius:18px;
+ background:linear-gradient(135deg,#0c1c2e,#0a1522);
+ margin-bottom:25px
+}
+
+.hero h1{
+ font-size:42px;
+ margin:0 0 10px
+}
+
+.hero p{
+ color:#a9bfd3
+}
+
+.badges{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-bottom:15px
+}
+
+.badge{
+ padding:5px 10px;
+ border:1px solid #2c5d7d;
+ border-radius:20px;
+ background:#0c2639;
+ color:#aee3ff;
+ font-size:13px
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+ gap:16px
+}
+
+.card{
+ padding:20px;
+ background:#0c1928;
+ border:1px solid #24415b;
+ border-radius:14px;
+ cursor:pointer;
+ transition:.2s
+}
+
+.card:hover{
+ transform:translateY(-3px);
+ border-color:#35b9ff;
+ box-shadow:0 8px 25px #0005
+}
+
+.card h2{
+ font-size:19px;
+ margin:0 0 7px
+}
+
+.card p{
+ color:#9db4c9;
+ margin:0
+}
+
+.progress{
+ height:6px;
+ background:#162b40;
+ border-radius:10px;
+ margin-top:15px;
+ overflow:hidden
+}
+
+.progress i{
+ display:block;
+ height:100%;
+ width:0;
+ background:linear-gradient(90deg,#35b9ff,#8b7cff);
+ transition:.4s
+}
+
+.page{
+ display:none
+}
+
+.page.active{
+ display:block
+}
+
+.back{
+ padding:9px 14px;
+ background:#102438;
+ color:#dceeff;
+ border:1px solid #2b4d69;
+ border-radius:8px;
+ cursor:pointer;
+ margin-bottom:20px
+}
+
+.back:hover{
+ border-color:#35b9ff
+}
+
+.topic{
+ margin:14px 0;
+ border:1px solid #24415b;
+ border-radius:12px;
+ background:#0c1928;
+ overflow:hidden
+}
+
+.topic>button{
+ width:100%;
+ text-align:left;
+ border:0;
+ background:none;
+ color:#edf7ff;
+ padding:17px 20px;
+ font-size:16px;
+ font-weight:bold;
+ cursor:pointer
+}
+
+.topic>button:hover{
+ background:#102235
+}
+
+.content{
+ display:none;
+ border-top:1px solid #24415b;
+ padding:18px 20px
+}
+
+.topic.open .content{
+ display:block
+}
+
+.content h3{
+ color:#62c8ff;
+ margin-top:18px
+}
+
+.content h4{
+ color:#b9dcf3
+}
+
+.content li{
+ margin-bottom:5px
+}
+
+.formula{
+ background:#06111d;
+ border:1px solid #28506d;
+ padding:13px;
+ border-radius:8px;
+ font-family:Consolas,monospace;
+ color:#cceeff;
+ margin:12px 0
+}
+
+.example{
+ border-left:4px solid #52d69e;
+ background:#0a211b;
+ padding:12px 15px;
+ margin:15px 0
+}
+
+.warning{
+ border-left:4px solid #ffc857;
+ background:#241e0b;
+ padding:12px 15px;
+ margin:15px 0
+}
+
+.diagram{
+ white-space:pre-wrap;
+ font-family:Consolas,monospace;
+ background:#050c14;
+ border:1px solid #29465f;
+ padding:15px;
+ border-radius:8px;
+ overflow:auto;
+ color:#cdeaff;
+ margin:15px 0
+}
+
+.quiz{
+ margin-top:15px;
+ padding:15px;
+ background:#091625;
+ border:1px solid #28445d;
+ border-radius:9px
+}
+
+.quiz button,
+.complete{
+ padding:8px 12px;
+ background:#12324b;
+ color:white;
+ border:1px solid #326486;
+ border-radius:7px;
+ cursor:pointer
+}
+
+.quiz button:hover,
+.complete:hover{
+ background:#174361
+}
+
+.answer{
+ display:none;
+ color:#9ff0c5;
+ margin-top:10px
+}
+
+.small{
+ color:#91a9bd;
+ font-size:13px
+}
+
+.searchResults{
+ margin-bottom:20px
+}
+
+.noResults{
+ padding:25px;
+ background:#0c1928;
+ border:1px solid #24415b;
+ border-radius:12px;
+ color:#9db4c9
+}
+
+footer{
+ text-align:center;
+ color:#7e96ab;
+ padding:35px
+}
+
+@media(max-width:700px){
+
+ header{
+  flex-direction:column;
+  align-items:stretch
+ }
+
+ #search{
+  max-width:none;
+  width:100%
+ }
+
+ .hero h1{
+  font-size:30px
+ }
+
+ main{
+  padding:20px 4%
+ }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+ LC <span>ENGINEERING</span> · 5TH–6TH YEAR
+</div>
+
+<input
+ id="search"
+ type="search"
+ placeholder="Search engineering topics..."
+ autocomplete="off"
+>
+
+</header>
+
+
+<main>
+
+<!-- ================= HOME ================= -->
+
+<section id="home" class="page active">
+
+<div class="hero">
+
+<div class="badges">
+
+<span class="badge">Leaving Certificate</span>
+<span class="badge">Engineering</span>
+<span class="badge">5th & 6th Year</span>
+<span class="badge">Higher + Ordinary</span>
+
+</div>
+
+<h1>Engineering Study Hub</h1>
+
+<p>
+A detailed Leaving Certificate Engineering study app covering
+engineering processes, automation and control systems, design
+capability, engineering principles and energy.
+</p>
+
+<p class="small">
+Select a strand below to begin studying. Your completed topics
+are saved automatically on this device.
+</p>
+
+</div>
+
+<div id="cards" class="grid"></div>
+
+</section>
+
+
+<!-- ================= COURSE ================= -->
+
+<section id="course" class="page">
+
+<button class="back" onclick="home()">
+← Back to Engineering
+</button>
+
+<div id="courseContent"></div>
+
+</section>
+
+</main>
+
+
+<footer>
+Leaving Certificate Engineering Study Hub
+</footer>
+
+
+<script>
+
+/* =========================================================
+   COURSE CONTENT
+   ========================================================= */
+
+const courses=[
+
+/* =========================================================
+   1. ENGINEERING PROCESSES
+   ========================================================= */
+
+{
+id:"processes",
+
+name:"1. Engineering Processes",
+
+desc:
+"Materials, manufacturing, workshop practice, engineering drawings, quality, safety and production.",
+
+topics:[
+
+{
+title:"Engineering and the Engineering Process",
+
+text:`
+
+<h3>What is engineering?</h3>
+
+<p>
+Engineering applies scientific knowledge, mathematics, materials,
+design and practical skills to solve problems and create useful
+products, systems and solutions.
+</p>
+
+<h3>The engineering process</h3>
+
+<p>
+Engineering design is normally an organised process rather than
+random trial and error.
+</p>
+
+<div class="diagram">
+PROBLEM
+   ↓
+INVESTIGATE
+   ↓
+REQUIREMENTS
+   ↓
+GENERATE IDEAS
+   ↓
+DESIGN
+   ↓
+PROTOTYPE
+   ↓
+TEST
+   ↓
+EVALUATE
+   ↓
+IMPROVE
+   ↺
+</div>
+
+<p>
+The process is <b>iterative</b>. This means an engineer may return
+to an earlier stage when testing shows that the design needs to be
+changed.
+</p>
+
+<h3>Important design considerations</h3>
+
+<ul>
+<li>Function</li>
+<li>Safety</li>
+<li>Strength</li>
+<li>Accuracy</li>
+<li>Cost</li>
+<li>Sustainability</li>
+<li>Manufacturability</li>
+<li>Maintenance</li>
+<li>Reliability</li>
+</ul>
+
+<div class="warning">
+<b>Exam warning:</b> Engineering is not simply "making something".
+It involves identifying a problem, developing solutions, testing them
+and evaluating the results.
+</div>
+`
+},
+
+{
+title:"Engineering Materials and Material Properties",
+
+text:`
+
+<h3>Why are materials important?</h3>
+
+<p>
+Engineers must select materials that are suitable for the conditions
+in which the product will operate.
+</p>
+
+<h3>Important properties</h3>
+
+<ul>
+
+<li>
+<b>Strength:</b> ability to withstand applied forces without failure.
+</li>
+
+<li>
+<b>Hardness:</b> resistance to indentation, scratching and wear.
+</li>
+
+<li>
+<b>Toughness:</b> ability to absorb energy before fracture.
+</li>
+
+<li>
+<b>Stiffness:</b> resistance to deformation.
+</li>
+
+<li>
+<b>Ductility:</b> ability to undergo plastic deformation in tension.
+</li>
+
+<li>
+<b>Malleability:</b> ability to deform plastically under compression.
+</li>
+
+<li>
+<b>Elasticity:</b> ability to return to its original shape after
+the load is removed.
+</li>
+
+<li>
+<b>Density:</b> mass per unit volume.
+</li>
+
+<li>
+<b>Conductivity:</b> ability to conduct heat or electricity.
+</li>
+
+<li>
+<b>Corrosion resistance:</b> resistance to chemical or environmental
+attack.
+</li>
+
+</ul>
+
+<div class="example">
+
+<b>Example:</b><br>
+
+A component exposed to repeated impacts may need good toughness.
+A cutting tool may require high hardness and wear resistance.
+
+</div>
+
+<div class="warning">
+
+<b>Common mistake:</b>
+Strength, hardness and toughness are different properties.
+Do not use them as if they mean the same thing.
+
+</div>
+`
+},
+
+{
+title:"Ferrous and Non-Ferrous Metals",
+
+text:`
+
+<h3>Ferrous metals</h3>
+
+<p>
+Ferrous metals are primarily iron-based materials.
+</p>
+
+<h4>Steel</h4>
+
+<p>
+Steel is an iron-based alloy containing carbon and potentially other
+alloying elements. Its properties can be modified through composition
+and processing.
+</p>
+
+<h4>Cast iron</h4>
+
+<p>
+Cast iron generally contains more carbon than steel and is commonly
+used where good castability, compressive strength or wear resistance
+is useful.
+</p>
+
+<h3>Non-ferrous metals</h3>
+
+<p>
+Non-ferrous metals do not have iron as their main constituent.
+</p>
+
+<ul>
+
+<li>
+<b>Aluminium:</b> low density and good corrosion resistance.
+</li>
+
+<li>
+<b>Copper:</b> excellent electrical and thermal conductivity.
+</li>
+
+<li>
+<b>Zinc:</b> useful in coatings and alloys.
+</li>
+
+</ul>
+
+<h3>Why use alloys?</h3>
+
+<p>
+An alloy combines elements to achieve a useful combination of
+properties. Engineers can therefore select or develop materials
+for particular applications.
+</p>
+`
+},
+
+{
+title:"Material Testing",
+
+text:`
+
+<h3>Why test materials?</h3>
+
+<p>
+Material testing provides evidence about how a material behaves under
+specific conditions. Engineers use testing to compare materials,
+select materials and check quality.
+</p>
+
+<h3>Stress</h3>
+
+<p>
+Stress describes force distributed over an area.
+</p>
+
+<div class="formula">
+σ = F / A
+
+Stress = Force / Area
+</div>
+
+<h3>Strain</h3>
+
+<p>
+Strain describes the change in length relative to the original length.
+</p>
+
+<div class="formula">
+ε = ΔL / L
+
+Strain = Extension / Original Length
+</div>
+
+<div class="example">
+
+<b>Worked example:</b><br><br>
+
+A force of 10,000 N acts on an area of 500 mm².
+
+<br><br>
+
+σ = F / A
+
+<br>
+
+σ = 10,000 / 500
+
+<br>
+
+<b>σ = 20 N/mm²</b>
+
+<br><br>
+
+Since 1 N/mm² = 1 MPa:
+
+<br>
+
+<b>Stress = 20 MPa</b>
+
+</div>
+
+<div class="warning">
+
+Always check units before substituting values into engineering
+formulae.
+
+</div>
+`
+},
+
+{
+title:"Workshop Measuring and Marking Out",
+
+text:`
+
+<h3>Why accuracy matters</h3>
+
+<p>
+Manufactured components must match their drawings within specified
+dimensions and tolerances. Errors during marking out can remain
+through later manufacturing stages.
+</p>
+
+<h3>Common equipment</h3>
+
+<ul>
+
+<li>Steel rule</li>
+<li>Vernier callipers</li>
+<li>Micrometer</li>
+<li>Try square</li>
+<li>Dividers</li>
+<li>Surface plate</li>
+<li>Scriber</li>
+<li>Centre punch</li>
+
+</ul>
+
+<h3>Datum</h3>
+
+<p>
+A datum is a reference point, line or surface from which measurements
+are taken.
+</p>
+
+<div class="diagram">
+
+DATUM EDGE
+────────────────────────────
+│
+│ ← dimension measured from datum
+│
+●──────────────●
+       FEATURE
+
+</div>
+
+<div class="warning">
+
+Use a consistent datum when measuring. Do not randomly measure from
+whichever edge appears closest.
+
+</div>
+`
+},
+
+{
+title:"Manufacturing Processes",
+
+text:`
+
+<h3>Machining</h3>
+
+<p>
+Machining removes material to produce the required shape, dimensions
+and surface finish.
+</p>
+
+<h3>Turning</h3>
+
+<p>
+During turning, the workpiece rotates while a cutting tool removes
+material. A lathe is therefore especially useful for cylindrical
+features.
+</p>
+
+<div class="diagram">
+
+       CUTTING TOOL
+            ↓
+        ┌──────┐
+────────┤  →   │────────
+        └──────┘
+        WORKPIECE
+            ↻
+
+</div>
+
+<h3>Drilling</h3>
+
+<p>
+A rotating drill removes material to create a hole.
+</p>
+
+<h3>Milling</h3>
+
+<p>
+A rotating multi-point cutter removes material from a workpiece.
+Milling can create flats, slots, pockets and many other features.
+</p>
+
+<h3>Process selection</h3>
+
+<ul>
+
+<li>Material</li>
+<li>Shape</li>
+<li>Dimensions</li>
+<li>Tolerance</li>
+<li>Surface finish</li>
+<li>Production quantity</li>
+<li>Available machinery</li>
+<li>Cost</li>
+<li>Safety</li>
+
+</ul>
+`
+},
+
+{
+title:"Joining Processes",
+
+text:`
+
+<h3>Why join components?</h3>
+
+<p>
+Many engineering products are manufactured from several separate
+components that must be assembled.
+</p>
+
+<h3>Examples of joining methods</h3>
+
+<ul>
+
+<li>Welding</li>
+<li>Brazing</li>
+<li>Soldering</li>
+<li>Bolting</li>
+<li>Riveting</li>
+<li>Adhesive bonding</li>
+
+</ul>
+
+<h3>Permanent and temporary joints</h3>
+
+<p>
+Welding is generally considered a permanent joining method.
+Bolted joints can normally be disassembled without destroying the
+components.
+</p>
+
+<div class="warning">
+
+When comparing joining methods, consider strength, heat input,
+materials, cost, accessibility, maintenance and safety.
+
+</div>
+`
+},
+
+{
+title:"Engineering Drawings",
+
+text:`
+
+<h3>Purpose of engineering drawings</h3>
+
+<p>
+Engineering drawings communicate geometry, dimensions, materials,
+tolerances and manufacturing information.
+</p>
+
+<h3>Orthographic projection</h3>
+
+<div class="diagram">
+
+          FRONT
+       ┌──────────┐
+       │          │
+       │          │
+       └──────────┘
+
+
+TOP    ┌──────────┐
+VIEW   │          │
+       └──────────┘
+
+
+SIDE   ┌────┐
+VIEW   │    │
+       │    │
+       └────┘
+
+</div>
+
+<p>
+Multiple views allow a three-dimensional object to be represented
+accurately on a two-dimensional drawing.
+</p>
+
+<h3>Dimensioning</h3>
+
+<p>
+Dimensions communicate the size and position of features. Good
+dimensioning avoids ambiguity and unnecessary repetition.
+</p>
+`
+},
+
+{
+title:"Safety, Quality and Sustainability",
+
+text:`
+
+<h3>Engineering safety</h3>
+
+<p>
+Safety involves identifying hazards, assessing risk and introducing
+controls that reduce the possibility or severity of harm.
+</p>
+
+<div class="diagram">
+
+IDENTIFY HAZARD
+       ↓
+ASSESS RISK
+       ↓
+REDUCE / CONTROL RISK
+       ↓
+SAFE PROCEDURE
+       ↓
+CHECK AND REVIEW
+
+</div>
+
+<h3>Quality</h3>
+
+<p>
+Quality means consistently meeting defined requirements. Inspection,
+measurement and testing can identify defects.
+</p>
+
+<h3>Sustainability</h3>
+
+<ul>
+
+<li>Reduce material waste</li>
+<li>Improve energy efficiency</li>
+<li>Design for repair</li>
+<li>Reuse components</li>
+<li>Consider recycling</li>
+<li>Consider the complete product lifecycle</li>
+
+</ul>
+`
+}
+
+]
+},
+
+
+/* =========================================================
+   2. AUTOMATION AND CONTROL
+   ========================================================= */
+
+{
+id:"automation",
+
+name:"2. Automation & Control Systems",
+
+desc:
+"Inputs, outputs, sensors, actuators, control logic, feedback and automated engineering systems.",
+
+topics:[
+
+{
+title:"Automation Fundamentals",
+
+text:`
+
+<h3>What is automation?</h3>
+
+<p>
+Automation uses technology to perform a process with reduced continuous
+human intervention.
+</p>
+
+<div class="diagram">
+
+INPUT
+  ↓
+CONTROL SYSTEM
+  ↓
+OUTPUT
+  ↑
+FEEDBACK
+
+</div>
+
+<p>
+The input provides information or energy. The controller determines
+what should happen and the output is the resulting action.
+</p>
+
+<div class="example">
+
+<b>Example:</b>
+
+An automatic door detects a person using a sensor. The controller
+processes the signal and commands a motor to open the door.
+
+</div>
+`
+},
+
+{
+title:"Sensors",
+
+text:`
+
+<h3>What is a sensor?</h3>
+
+<p>
+A sensor detects a physical condition and produces a signal that can
+be interpreted by a control system.
+</p>
+
+<h3>Examples</h3>
+
+<ul>
+
+<li>Temperature sensor</li>
+<li>Light sensor</li>
+<li>Pressure sensor</li>
+<li>Proximity sensor</li>
+<li>Position sensor</li>
+<li>Motion sensor</li>
+
+</ul>
+
+<p>
+When describing a sensor, identify:
+
+</p>
+
+<ol>
+
+<li>What physical quantity does it detect?</li>
+<li>What signal does it produce?</li>
+<li>How is the signal used?</li>
+
+</ol>
+`
+},
+
+{
+title:"Actuators",
+
+text:`
+
+<h3>What is an actuator?</h3>
+
+<p>
+An actuator converts energy or a control signal into physical movement
+or another useful output.
+</p>
+
+<ul>
+
+<li>Electric motor</li>
+<li>Solenoid</li>
+<li>Pneumatic cylinder</li>
+<li>Hydraulic cylinder</li>
+
+</ul>
+
+<div class="diagram">
+
+SENSOR
+  ↓
+CONTROLLER
+  ↓
+ACTUATOR
+  ↓
+PHYSICAL ACTION
+
+</div>
+
+<p>
+
+Remember:
+
+<b>Sensor = detects</b><br>
+<b>Controller = decides</b><br>
+<b>Actuator = acts</b>
+
+</p>
+`
+},
+
+{
+title:"Open-Loop and Closed-Loop Control",
+
+text:`
+
+<h3>Open-loop control</h3>
+
+<p>
+An open-loop system performs an action without measuring the final
+output and using that information to correct the system.
+</p>
+
+<div class="diagram">
+
+INPUT → CONTROLLER → OUTPUT
+
+</div>
+
+<p>
+Example: a heater operating for a fixed period using only a timer.
+</p>
+
+<h3>Closed-loop control</h3>
+
+<p>
+A closed-loop system uses feedback.
+</p>
+
+<div class="diagram">
+
+          ┌─────────────┐
+          ↓             │
+INPUT → CONTROLLER → OUTPUT
+          ↑             │
+          └─ FEEDBACK ──┘
+
+</div>
+
+<p>
+A thermostat is an example because it measures temperature and adjusts
+the heating system.
+</p>
+
+<div class="warning">
+
+<b>Key difference:</b> Feedback.
+
+</div>
+`
+},
+
+{
+title:"Control Logic and Sequences",
+
+text:`
+
+<h3>Decision making</h3>
+
+<p>
+Automated systems often use conditions such as:
+
+<b>IF condition is true → perform action.</b>
+</p>
+
+<div class="diagram">
+
+START
+  ↓
+READ SENSOR
+  ↓
+CONDITION TRUE?
+  ├── YES → ACTUATE
+  │
+  └── NO → CHECK AGAIN
+
+</div>
+
+<h3>Interlocks</h3>
+
+<p>
+An interlock prevents an operation from occurring unless a required
+condition is satisfied.
+</p>
+
+<div class="example">
+
+A machine may be prevented from starting while its safety guard is
+open. A guard switch can become part of the control logic.
+
+</div>
+`
+},
+
+{
+title:"Pneumatic and Hydraulic Systems",
+
+text:`
+
+<h3>Pneumatics</h3>
+
+<p>
+Pneumatic systems use compressed air to transmit energy and produce
+controlled movement.
+</p>
+
+<div class="diagram">
+
+COMPRESSOR
+    ↓
+AIR SUPPLY
+    ↓
+CONTROL VALVE
+    ↓
+CYLINDER
+    ↓
+LINEAR MOVEMENT
+
+</div>
+
+<h3>Hydraulics</h3>
+
+<p>
+Hydraulic systems use pressurised liquid and are particularly useful
+where large forces are required.
+</p>
+
+<h3>Comparison</h3>
+
+<ul>
+
+<li>Pneumatics use compressed gas.</li>
+<li>Hydraulics use pressurised liquid.</li>
+<li>Hydraulics can produce very large forces.</li>
+<li>Pneumatics can provide fast controlled movement.</li>
+
+</ul>
+`
+}
+
+]
+},
+
+
+/* =========================================================
+   3. DESIGN CAPABILITY
+   ========================================================= */
+
+{
+id:"design",
+
+name:"3. Design Capability",
+
+desc:
+"Problem solving, design development, prototyping, communication, evaluation and engineering decisions.",
+
+topics:[
+
+{
+title:"Identifying an Engineering Problem",
+
+text:`
+
+<h3>Start with the problem</h3>
+
+<p>
+A good engineering design begins by understanding what actually needs
+to be solved rather than immediately choosing a product.
+</p>
+
+<h3>Questions to ask</h3>
+
+<ul>
+
+<li>What must the product do?</li>
+<li>Who will use it?</li>
+<li>Where will it operate?</li>
+<li>What loads will occur?</li>
+<li>What dimensions are required?</li>
+<li>What materials are available?</li>
+<li>What safety requirements exist?</li>
+<li>What environmental constraints exist?</li>
+<li>What cost constraints exist?</li>
+
+</ul>
+
+<div class="warning">
+
+A requirement describes something the design must achieve.
+A constraint limits the possible solutions.
+
+</div>
+`
+},
+
+{
+title:"Generating and Evaluating Ideas",
+
+text:`
+
+<h3>Concept generation</h3>
+
+<p>
+Engineers normally produce several possible solutions before selecting
+the most suitable design.
+</p>
+
+<p>
+Ideas can be communicated using sketches, annotations, CAD models,
+calculations and physical models.
+</p>
+
+<h3>Evaluation criteria</h3>
+
+<ul>
+
+<li>Function</li>
+<li>Safety</li>
+<li>Strength</li>
+<li>Manufacturability</li>
+<li>Cost</li>
+<li>Appearance</li>
+<li>Ergonomics</li>
+<li>Sustainability</li>
+<li>Reliability</li>
+
+</ul>
+
+<p>
+A strong evaluation compares different designs against the same
+criteria rather than simply saying one "looks better".
+</p>
+`
+},
+
+{
+title:"Prototyping and Testing",
+
+text:`
+
+<h3>Why prototype?</h3>
+
+<p>
+A prototype allows a designer to test an idea before committing to
+full production.
+</p>
+
+<div class="diagram">
+
+DESIGN
+  ↓
+PROTOTYPE
+  ↓
+TEST
+  ↓
+RESULTS
+  ↓
+EVALUATE
+  ↓
+MODIFY
+  ↺
+
+</div>
+
+<p>
+Tests should relate directly to the design requirements.
+</p>
+
+<div class="example">
+
+If a component is designed to carry a 500 N load, a suitable test
+should investigate its behaviour under the required loading conditions.
+
+</div>
+`
+},
+
+{
+title:"Ergonomics and Human Factors",
+
+text:`
+
+<h3>What is ergonomics?</h3>
+
+<p>
+Ergonomics considers how people interact with products, machines and
+systems.
+</p>
+
+<h3>Consider</h3>
+
+<ul>
+
+<li>Comfort</li>
+<li>Reach</li>
+<li>Grip</li>
+<li>Visibility</li>
+<li>Controls</li>
+<li>Safety</li>
+<li>Ease of use</li>
+<li>Human error</li>
+
+</ul>
+
+<div class="example">
+
+A handle should be sized and shaped so the user can grip it securely
+without unnecessary discomfort or excessive force.
+
+</div>
+`
+},
+
+{
+title:"Design Communication",
+
+text:`
+
+<h3>Engineering communication methods</h3>
+
+<ul>
+
+<li>Freehand sketches</li>
+<li>Technical drawings</li>
+<li>Dimensions</li>
+<li>Annotations</li>
+<li>CAD models</li>
+<li>Physical models</li>
+<li>Prototypes</li>
+<li>Presentations</li>
+
+</ul>
+
+<p>
+The communication method should suit the purpose.
+</p>
+
+<p>
+A quick concept might be communicated with an annotated sketch,
+whereas manufacturing requires accurate technical information.
+</p>
+`
+}
+
+]
+},
+
+
+/* =========================================================
+   4. ENGINEERING PRINCIPLES AND ENERGY
+   ========================================================= */
+
+{
+id:"principles",
+
+name:"4. Engineering Principles & Energy",
+
+desc:
+"Forces, motion, energy, power, mechanisms, electrical principles and energy systems.",
+
+topics:[
+
+{
+title:"Forces",
+
+text:`
+
+<h3>What is a force?</h3>
+
+<p>
+A force is a push or pull that can change an object's motion or
+deform it.
+</p>
+
+<p>
+Force is measured in newtons (N).
+</p>
+
+<h3>Newton's Second Law</h3>
+
+<div class="formula">
+
+F = ma
+
+</div>
+
+<p>
+
+F = force in newtons<br>
+m = mass in kilograms<br>
+a = acceleration in m/s²
+
+</p>
+
+<div class="example">
+
+<b>Worked example:</b>
+
+<br><br>
+
+A 10 kg object accelerates at 3 m/s².
+
+<br><br>
+
+F = ma
+
+<br>
+
+F = 10 × 3
+
+<br>
+
+<b>F = 30 N</b>
+
+</div>
+
+<h3>Weight</h3>
+
+<div class="formula">
+
+W = mg
+
+</div>
+
+<p>
+Near Earth's surface, g ≈ 9.81 m/s².
+</p>
+`
+},
+
+{
+title:"Moments",
+
+text:`
+
+<h3>Turning effect of a force</h3>
+
+<p>
+A force can produce a turning effect around a pivot. This is called
+a moment.
+</p>
+
+<div class="formula">
+
+Moment = Force × perpendicular distance
+
+M = Fd
+
+</div>
+
+<div class="diagram">
+
+          ↓ F
+          │
+          │
+──────────●──────────────
+          ↑
+        PIVOT
+
+<----------- d ---------->
+
+</div>
+
+<div class="example">
+
+<b>Worked example:</b>
+
+<br><br>
+
+A 50 N force acts 0.4 m from a pivot.
+
+<br><br>
+
+M = Fd
+
+<br>
+
+M = 50 × 0.4
+
+<br>
+
+<b>M = 20 Nm</b>
+
+</div>
+
+<div class="warning">
+
+Use the perpendicular distance from the pivot to the line of action
+of the force.
+
+</div>
+`
+},
+
+{
+title:"Equilibrium",
+
+text:`
+
+<h3>What is equilibrium?</h3>
+
+<p>
+For an object to be in static equilibrium, the resultant force and
+resultant turning effect must both be zero.
+</p>
+
+<div class="formula">
+
+ΣF = 0
+
+</div>
+
+<div class="formula">
+
+ΣM = 0
+
+</div>
+
+<p>
+Therefore the upward and downward forces must balance, and the
+clockwise and anticlockwise moments must balance.
+</p>
+
+<div class="example">
+
+If a stationary beam has a total downward load of 100 N, its support
+reactions must provide a combined 100 N upward force.
+
+</div>
+`
+},
+
+{
+title:"Work, Energy and Power",
+
+text:`
+
+<h3>Work</h3>
+
+<p>
+Mechanical work is done when a force causes displacement in the
+direction of that force.
+</p>
+
+<div class="formula">
+
+W = Fs
+
+</div>
+
+<p>
+
+W = work in joules<br>
+F = force in newtons<br>
+s = displacement in metres
+
+</p>
+
+<h3>Power</h3>
+
+<div class="formula">
+
+P = W / t
+
+</div>
+
+<p>
+Power is the rate at which work is done. It is measured in watts.
+</p>
+
+<div class="example">
+
+A machine performs 6,000 J of work in 20 seconds.
+
+<br><br>
+
+P = W/t
+
+<br>
+
+P = 6000/20
+
+<br>
+
+<b>P = 300 W</b>
+
+</div>
+`
+},
+
+{
+title:"Efficiency",
+
+text:`
+
+<h3>Efficiency</h3>
+
+<p>
+Real machines cannot normally convert all supplied energy into useful
+output energy. Some energy is dissipated, often as heat, sound or
+friction.
+</p>
+
+<div class="formula">
+
+Efficiency =
+Useful Output / Total Input × 100%
+
+</div>
+
+<div class="example">
+
+A machine receives 1,000 J and produces 750 J of useful output.
+
+<br><br>
+
+Efficiency = 750 / 1000 × 100
+
+<br>
+
+<b>Efficiency = 75%</b>
+
+</div>
+
+<div class="warning">
+
+Efficiency for an ordinary energy conversion system cannot exceed
+100%.
+
+</div>
+`
+},
+
+{
+title:"Mechanical Advantage",
+
+text:`
+
+<h3>Mechanical advantage</h3>
+
+<p>
+Mechanical advantage compares the output load force with the input
+effort force.
+</p>
+
+<div class="formula">
+
+MA = Load / Effort
+
+</div>
+
+<div class="example">
+
+A machine lifts a 600 N load using a 100 N effort.
+
+<br><br>
+
+MA = 600 / 100
+
+<br>
+
+<b>MA = 6</b>
+
+</div>
+
+<p>
+A mechanical advantage greater than 1 means the machine increases
+the available output force relative to the input force.
+</p>
+`
+},
+
+{
+title:"Electrical Principles",
+
+text:`
+
+<h3>Current, voltage and resistance</h3>
+
+<p>
+Current is the rate of flow of electric charge.
+Voltage is the potential difference that drives current.
+Resistance opposes current.
+</p>
+
+<h3>Ohm's Law</h3>
+
+<div class="formula">
+
+V = IR
+
+</div>
+
+<p>
+
+V = voltage in volts<br>
+I = current in amperes<br>
+R = resistance in ohms
+
+</p>
+
+<div class="example">
+
+A 12 V supply is connected to a 6 Ω resistor.
+
+<br><br>
+
+I = V/R
+
+<br>
+
+I = 12/6
+
+<br>
+
+<b>I = 2 A</b>
+
+</div>
+
+<h3>Electrical Power</h3>
+
+<div class="formula">
+
+P = VI
+
+P = I²R
+
+P = V²/R
+
+</div>
+`
+},
+
+{
+title:"Series and Parallel Circuits",
+
+text:`
+
+<h3>Series circuit</h3>
+
+<div class="diagram">
+
++ ──[ R1 ]──[ R2 ]──[ R3 ]── -
+
+          SAME CURRENT
+
+</div>
+
+<p>
+In a simple series circuit, the same current flows through each
+component.
+</p>
+
+<h3>Parallel circuit</h3>
+
+<div class="diagram">
+
++ ──┬──[ R1 ]──┬── -
+     │          │
+     └──[ R2 ]──┘
+
+</div>
+
+<p>
+In a parallel circuit, branches are connected across the supply,
+so the voltage across ideal parallel branches is the same.
+</p>
+
+<div class="warning">
+
+Remember:
+
+<br><br>
+
+<b>Series → same current</b>
+
+<br>
+
+<b>Parallel → same voltage across branches</b>
+
+</div>
+`
+},
+
+{
+title:"Energy and Sustainability",
+
+text:`
+
+<h3>Engineering and energy</h3>
+
+<p>
+Engineers must consider how energy is generated, transferred,
+stored and used.
+</p>
+
+<h3>Energy sources</h3>
+
+<ul>
+
+<li>Solar</li>
+<li>Wind</li>
+<li>Hydroelectric</li>
+<li>Geothermal</li>
+<li>Biomass</li>
+<li>Fossil fuels</li>
+<li>Nuclear</li>
+
+</ul>
+
+<h3>Engineering decisions</h3>
+
+<p>
+Energy systems can be compared using efficiency, reliability, cost,
+environmental impact, resource availability and lifecycle effects.
+</p>
+
+<div class="example">
+
+A system with excellent efficiency may still be unsuitable if it is
+too expensive, unreliable or difficult to maintain.
+
+</div>
+`
+}
+
+]
+}
+
+];
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+const cards=document.getElementById("cards");
+const homePage=document.getElementById("home");
+const coursePage=document.getElementById("course");
+const courseContent=document.getElementById("courseContent");
+
+
+/* CREATE STRAND CARDS */
+
+function buildCards(){
+
+ cards.innerHTML="";
+
+ courses.forEach((course,index)=>{
+
+  const card=document.createElement("div");
+
+  card.className="card";
+
+  card.innerHTML=`
+
+   <h2>${course.name}</h2>
+
+   <p>
+   ${course.desc}
+   </p>
+
+   <div class="progress">
+    <i id="progress-${index}"></i>
+   </div>
+
+   <p class="small">
+   ${course.topics.length} topics
+   </p>
+
+  `;
+
+  card.addEventListener("click",()=>{
+   openCourse(index);
+  });
+
+  cards.appendChild(card);
+
+ });
+
+}
+
+
+/* OPEN COURSE */
+
+function openCourse(index){
+
+ const course=courses[index];
+
+ homePage.classList.remove("active");
+ coursePage.classList.add("active");
+
+ courseContent.innerHTML=`
+
+ <h1>${course.name}</h1>
+
+ <p class="small">
+ ${course.desc}
+ </p>
+
+ `;
+
+ course.topics.forEach((topic,topicIndex)=>{
+
+  const box=document.createElement("div");
+
+  box.className="topic";
+
+  box.innerHTML=`
+
+  <button class="topicButton">
+
+   ${topicIndex+1}. ${topic.title}
+
+   <span style="float:right">+</span>
+
+  </button>
+
+  <div class="content">
+
+   ${topic.text}
+
+   <div class="quiz">
+
+    <b>Quick Check</b>
+
+    <p>
+    What is the main engineering principle you should remember
+    from this topic?
+    </p>
+
+    <button class="answerButton">
+    Show answer
+    </button>
+
+    <div class="answer">
+    Understand the principle, know the important terminology or
+    formula, and be able to explain how it applies to an engineering
+    situation.
+    </div>
+
+   </div>
+
+   <br>
+
+   <button class="complete">
+   Mark topic complete
+   </button>
+
+  </div>
+
+  `;
+
+
+  /* OPEN/CLOSE TOPIC */
+
+  const topicButton=box.querySelector(".topicButton");
+
+  topicButton.addEventListener("click",()=>{
+
+   box.classList.toggle("open");
+
+   topicButton.querySelector("span").textContent=
+    box.classList.contains("open") ? "−" : "+";
+
+  });
+
+
+  /* ANSWER BUTTON */
+
+  const answerButton=box.querySelector(".answerButton");
+
+  answerButton.addEventListener("click",()=>{
+
+   const answer=box.querySelector(".answer");
+
+   answer.style.display=
+    answer.style.display==="block" ? "none" : "block";
+
+   answerButton.textContent=
+    answer.style.display==="block"
+    ? "Hide answer"
+    : "Show answer";
+
+  });
+
+
+  /* COMPLETE BUTTON */
+
+  const complete=box.querySelector(".complete");
+
+  const storageKey=
+   "engineering-" + index + "-" + topicIndex;
+
+  if(localStorage.getItem(storageKey)){
+
+   complete.textContent="✓ Completed";
+   complete.style.color="#7ff0b6";
+
+  }
+
+  complete.addEventListener("click",()=>{
+
+   localStorage.setItem(storageKey,"done");
+
+   complete.textContent="✓ Completed";
+   complete.style.color="#7ff0b6";
+
+   updateProgress();
+
+  });
+
+
+  courseContent.appendChild(box);
+
+ });
+
+}
+
+
+/* BACK HOME */
+
+function home(){
+
+ coursePage.classList.remove("active");
+
+ homePage.classList.add("active");
+
+ document.getElementById("search").value="";
+
+ buildCards();
+
+ updateProgress();
+
+ window.scrollTo({
+  top:0,
+  behavior:"smooth"
+ });
+
+}
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+function updateProgress(){
+
+ courses.forEach((course,index)=>{
+
+  let completed=0;
+
+  course.topics.forEach((topic,topicIndex)=>{
+
+   if(
+    localStorage.getItem(
+     "engineering-"+index+"-"+topicIndex
+    )
+   ){
+    completed++;
+   }
+
+  });
+
+  const percent=
+   completed/course.topics.length*100;
+
+  const bar=
+   document.getElementById("progress-"+index);
+
+  if(bar){
+   bar.style.width=percent+"%";
+  }
+
+ });
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+document
+.getElementById("search")
+.addEventListener("input",function(){
+
+ const query=this.value.toLowerCase().trim();
+
+ if(!query){
+
+  buildCards();
+  updateProgress();
+  return;
+
+ }
+
+ const results=[];
+
+ courses.forEach((course,courseIndex)=>{
+
+  course.topics.forEach((topic,topicIndex)=>{
+
+   const text=(
+    course.name+" "+
+    course.desc+" "+
+    topic.title+" "+
+    topic.text
+   )
+   .replace(/<[^>]*>/g," ")
+   .toLowerCase();
+
+   if(text.includes(query)){
+
+    results.push({
+     course:courseIndex,
+     topic:topicIndex,
+     title:topic.title,
+     courseName:course.name
+    });
+
+   }
+
+  });
+
+ });
+
+
+ cards.innerHTML="";
+
+
+ if(results.length===0){
+
+  cards.innerHTML=`
+
+   <div class="noResults">
+
+   <h2>No results found</h2>
+
+   <p>
+   Try searching for something like:
+   <b>force</b>,
+   <b>sensor</b>,
+   <b>materials</b>,
+   <b>Ohm's law</b>,
+   <b>moments</b>,
+   <b>automation</b>
+   or
+   <b>design</b>.
+   </p>
+
+   </div>
+
+  `;
+
+  return;
+
+ }
+
+
+ results.forEach(result=>{
+
+  const card=document.createElement("div");
+
+  card.className="card";
+
+  card.innerHTML=`
+
+   <h2>${result.title}</h2>
+
+   <p>${result.courseName}</p>
+
+   <p class="small">
+   Click to open this topic
+   </p>
+
+  `;
+
+  card.addEventListener("click",()=>{
+
+   openCourse(result.course);
+
+   setTimeout(()=>{
+
+    const topics=
+     document.querySelectorAll(".topic");
+
+    if(topics[result.topic]){
+
+     topics[result.topic].classList.add("open");
+
+     topics[result.topic]
+      .scrollIntoView({
+       behavior:"smooth",
+       block:"start"
+      });
+
+    }
+
+   },50);
+
+  });
+
+  cards.appendChild(card);
+
+ });
+
+});
+
+
+/* =========================================================
+   SERVICE WORKER
+   ========================================================= */
+
+if("serviceWorker" in navigator){
+
+ window.addEventListener("load",()=>{
+
+  navigator.serviceWorker
+   .register("./sw.js")
+   .then(()=>{
+    console.log("LC Engineering Service Worker registered");
+   })
+   .catch(error=>{
+    console.error(
+     "Service Worker registration failed:",
+     error
+    );
+   });
+
+ });
+
+}
+
+
+/* START APP */
+
+buildCards();
+updateProgress();
+
+</script>
+
+</body>
+</html>
